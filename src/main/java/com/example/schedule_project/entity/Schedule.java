@@ -22,6 +22,14 @@ public class Schedule extends BaseEntity {
     private String name;
     private String password;
 
+    /**
+     *
+     * @param scheduleName : 일정 제목
+     * @param content : 일정 내용
+     * @param name : 작성자명
+     * @param password : 비밀번호
+     */
+
     public Schedule(String scheduleName, String content, String name, String password) {
         this.scheduleName = scheduleName;
         this.content = content;
@@ -29,7 +37,11 @@ public class Schedule extends BaseEntity {
         this.password = password;
     }
 
-
+    /**
+     * 수정 가능한 필드만 안전하게 바꾸려고 만든 엔티티 메서드
+     * @param scheduleName 일정 제목
+     * @param name 작성자명
+     */
     public void updateSchedule(String scheduleName, String name) {
         this.scheduleName = scheduleName;
         this.name = name;
