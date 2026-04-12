@@ -50,8 +50,8 @@ public class ScheduleController {
     }
 
     @PutMapping("/schedules/{id}")
-    public ResponseEntity<UpdateScheduleResponse> updateSchedule(@PathVariable Long scheduleId, @RequestBody UpdateScheduleRequest request) {
-        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.update(scheduleId, request.getScheduleName(), request.getName(), request.getPassword()));
+    public ResponseEntity<UpdateScheduleResponse> updateSchedule(@PathVariable Long id, @RequestBody UpdateScheduleRequest request) {
+        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.update(id, request.getScheduleName(), request.getName(), request.getPassword()));
     }
 
 }
