@@ -15,15 +15,17 @@ public class Schedule extends BaseEntity {
     //필드 생성
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
-    private String name;
+    private String scheduleName;
     private String content;
+    private String name;
     private String password;
 
-    public Schedule(String name, String content, String password) {
-        this.name = name;
+    public Schedule(String scheduleName, String content, String name, String password) {
+        this.scheduleName = scheduleName;
         this.content = content;
+        this.name = name;
         this.password = password;
     }
 
