@@ -16,8 +16,11 @@ public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
 
-    //저장메서드 만들기
-    //사용자 입력 값 받아오기
+    /**
+     *
+     * @param request 저장 요청 값
+     * @return dto로 변환된 응답 값
+     */
     @Transactional
     public CreateScheduleResponse addSchedule(CreateScheduleRequest request) {
         //dto -> entity로 변환하기 ^^
@@ -40,6 +43,11 @@ public class ScheduleService {
         return createResponse;
     }
 
+    /**
+     *
+     * @param name 조회 시 작성자 명으로 조회
+     * @return 조회 리스트 -> gets
+     */
     //전체조회 메서드
     @Transactional(readOnly = true)
     //전체 조회 리스트로 생성, getAll()
