@@ -120,4 +120,23 @@ public class ScheduleService {
                 findSchedule.getScheduleName(),
                 findSchedule.getName());
     }
+
+    //삭제 메서드 구현
+    public void delete(Long id, String password) {
+
+        //해당 일정이 없는 경우
+        Schedule findSchedule = scheduleRepository.findById(id).orElseThrow(
+                () -> new IllegalMonitorStateException("선택한 일정이 존재하지 않습니다.")
+        );
+
+        //사용자가 입력한 패스워드 == DB에 저장된 패스워드 일치 여부 확인
+        if (!findSchedule.getPassword().equals(password)) {
+            //예외처리
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        //비밀번호가 일치할 경우 삭제처리
+        scheduleRepository.deleteById(id);
+
+    }
 }
