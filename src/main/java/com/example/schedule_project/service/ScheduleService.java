@@ -1,8 +1,6 @@
 package com.example.schedule_project.service;
 
-import com.example.schedule_project.dto.CreateScheduleRequest;
-import com.example.schedule_project.dto.CreateScheduleResponse;
-import com.example.schedule_project.dto.GetScheduleResponse;
+import com.example.schedule_project.dto.*;
 import com.example.schedule_project.entity.Schedule;
 import com.example.schedule_project.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
@@ -101,4 +99,25 @@ public class ScheduleService {
     }
 
 
+    //선택한 일정 수정
+    //선택한 일정의 아이디, 일정 제목, 작성자명, 패스워드 매개변수로 받아옴
+    public UpdateScheduleResponse update(Long id, String scheduleName, String name, String password) {
+        //찾은 아이디 밑에 있는 변수에 넣어줌
+        Schedule findSchedule = scheduleRepository.findById(id).orElseThrow(
+                //없을 시 예외처리
+                () -> new IllegalMonitorStateException("선택한 일정이 존재하지 않습니다.")
+        );
+
+        //사용자가 입력한 패스워드 == DB에 저장된 패스워드가 같은지 확인하기
+        if (!findSchedule.getPassword().equals(password)) {
+            //불일치시 예외처리
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+        //비밀번호가 일치할 시 일정 제목, 작성자명 수정
+        findSchedule.updateSchedule(scheduleName, name);
+
+        return new UpdateScheduleResponse(
+                findSchedule.getScheduleName(),
+                findSchedule.getName());
+    }
 }
