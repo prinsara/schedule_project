@@ -93,6 +93,8 @@ Content-Type: application/json
 
 status: `201 Created`
 
+---
+
 ### 2. 전체 일정 조회
 
 domain: `schedule`
@@ -180,6 +182,8 @@ name=사라
 
 status: `200 OK`
 
+---
+
 ### 3. 선택 일정 조회
 
 domain: `schedule`
@@ -264,6 +268,8 @@ id=1
 
 status: `200 OK`
 
+---
+
 ### 4. 선택 일정 수정
 
 domain: `schedule`
@@ -346,6 +352,8 @@ Content-Type: application/json
 | name | String | 수정된 작성자명 |
 
 status: `200 OK`
+
+---
 
 ### 5. 선택 일정 삭제
 
