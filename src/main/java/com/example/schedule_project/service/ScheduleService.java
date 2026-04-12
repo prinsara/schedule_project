@@ -87,7 +87,7 @@ public class ScheduleService {
     //선택 조회 메서드
     public GetScheduleResponse getOne(Long ScheduleId) {
         Schedule foundSchedule = scheduleRepository.findById(ScheduleId).orElseThrow(
-                () -> new IllegalMonitorStateException("선택한 일정이 존재하지 않습니다.")
+                () -> new IllegalArgumentException("선택한 일정이 존재하지 않습니다.")
         );
         return new GetScheduleResponse(
                 foundSchedule.getId(),
@@ -106,7 +106,7 @@ public class ScheduleService {
         //찾은 아이디 밑에 있는 변수에 넣어줌
         Schedule findSchedule = scheduleRepository.findById(id).orElseThrow(
                 //없을 시 예외처리
-                () -> new IllegalMonitorStateException("선택한 일정이 존재하지 않습니다.")
+                () -> new IllegalArgumentException("선택한 일정이 존재하지 않습니다.")
         );
 
         //사용자가 입력한 패스워드 == DB에 저장된 패스워드가 같은지 확인하기
@@ -128,7 +128,7 @@ public class ScheduleService {
 
         //해당 일정이 없는 경우
         Schedule findSchedule = scheduleRepository.findById(id).orElseThrow(
-                () -> new IllegalMonitorStateException("선택한 일정이 존재하지 않습니다.")
+                () -> new IllegalArgumentException("선택한 일정이 존재하지 않습니다.")
         );
 
         //사용자가 입력한 패스워드 == DB에 저장된 패스워드 일치 여부 확인
