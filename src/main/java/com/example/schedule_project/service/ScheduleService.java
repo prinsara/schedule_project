@@ -2,11 +2,15 @@ package com.example.schedule_project.service;
 
 import com.example.schedule_project.dto.CreateScheduleRequest;
 import com.example.schedule_project.dto.CreateScheduleResponse;
+import com.example.schedule_project.dto.GetScheduleResponse;
 import com.example.schedule_project.entity.Schedule;
 import com.example.schedule_project.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -37,4 +41,48 @@ public class ScheduleService {
 
         return createResponse;
     }
+
+    //전체조회 메서드
+    @Transactional(readOnly = true)
+    //전체 조회 리스트로 생성, getAll()
+    //작성자명 기준으로 전체조회시 getAll 매개변수 안에 작성자명 name 기재
+    public List<GetScheduleResponse> getAll(String name) {
+
+        List<Schedule> schedules;
+
+        //작성자명이 없으면 전체 일정 조회
+        //작성자 명이 없을 경우 if 문으로 name == null 인지, isBlank() 메서드를 이용하여 "", " " 이런 공백이 있는지 예외 확인을 함
+        //해당과 같은 경우일 경우에
+        if (name == null || name.isBlank()) {
+            //Repository에 저장된 사용자 입력 값에 ModifiedAt(수정순) 내림차순으로 정렬하는 메서드 실행함
+            //해당 메서드 안에 매개변수는 없음(작성자명이 없기 때문에)
+            schedules = scheduleRepository.findAllByOrderByModifiedAtDesc();
+        }
+        //작성자명이 있으면 해당 작성자의 일정만 조회할 수 있게끔 else 사용
+        //위와 같지만 다른 점은 매개변수 안에 (name)이 들어갔다는 점 해당 작성자명을 기준으로 수정순으로 정렬
+        else {
+            schedules = scheduleRepository.findByNameOrderByModifiedAtDesc(name);
+        }
+
+        //이렇게 상기와 같은 방법을 사용 가져온 값을 여러 개 담기 위해 빈 리스트 하나 만들어줌
+        List<GetScheduleResponse> gets = new ArrayList<>();
+
+        //향상된 for문 사용하여 응답 dto로 변환해야함 응답에 필요한 Password 제외 넣어줌
+        for (Schedule schedule : schedules) {
+            //schedules에 담긴 일정들을 하나씩 꺼내서 schedule에 넣어준다.
+            //예를 들어 해당 일정이 5개면 5번 돌면서 하나씩 처리하게끔 만든다.
+            GetScheduleResponse getDto = new GetScheduleResponse(
+                    schedule.getId(),
+                    schedule.getScheduleName(),
+                    schedule.getContent(),
+                    schedule.getName(),
+                    schedule.getCreatedAt(),
+                    schedule.getModifiedAt()
+            );
+            //gets에 추가
+            gets.add(getDto);
+        }
+        return gets;
+    }
+
 }
