@@ -9,11 +9,9 @@ public class UpdateScheduleResponse {
 
     private final String scheduleName;
     private final String name;
-    private final LocalDateTime modifiedAt;
 
-    public UpdateScheduleResponse(String scheduleName, String name, LocalDateTime modifiedAt) {
+    public UpdateScheduleResponse(String scheduleName, String name) {
         this.scheduleName = scheduleName;
         this.name = name;
-        this.modifiedAt = modifiedAt;
     }
 }

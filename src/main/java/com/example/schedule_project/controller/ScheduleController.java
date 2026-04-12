@@ -21,8 +21,8 @@ public class ScheduleController {
     //보여줘야 돼 뭘 보여줘야 돼?!?!?!?!! 응답 메서드 만들기
     //요청이 온 거를
     public ResponseEntity<CreateScheduleResponse> createSchedule(@RequestBody CreateScheduleRequest request) {
-    //서비스에서 만든 메서드 활용 사용자에게 보여주기
-       CreateScheduleResponse createResult = scheduleService.addSchedule(request);
+        //서비스에서 만든 메서드 활용 사용자에게 보여주기
+        CreateScheduleResponse createResult = scheduleService.addSchedule(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(createResult);
     }
 
@@ -46,12 +46,12 @@ public class ScheduleController {
     //선택 일정 조회
     @GetMapping("/schedules/{id}")
     public ResponseEntity<GetScheduleResponse> getOneSchedule(@PathVariable Long id) {
-       return ResponseEntity.status(HttpStatus.OK).body(scheduleService.getOne(id));
+        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.getOne(id));
     }
 
     @PutMapping("/schedules/{id}")
-    public UpdateScheduleResponse updateSchedule(@PathVariable Long scheduleId, @RequestBody UpdateScheduleRequest request) {
-
+    public ResponseEntity<UpdateScheduleResponse> updateSchedule(@PathVariable Long scheduleId, @RequestBody UpdateScheduleRequest request) {
+        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.update(scheduleId, request.getScheduleName(), request.getName(), request.getPassword()));
     }
 
 }

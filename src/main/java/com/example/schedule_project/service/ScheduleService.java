@@ -118,7 +118,6 @@ public class ScheduleService {
 
         return new UpdateScheduleResponse(
                 findSchedule.getScheduleName(),
-                findSchedule.getName(),
-                findSchedule.getModifiedAt());
+                findSchedule.getName());
     }
 }
