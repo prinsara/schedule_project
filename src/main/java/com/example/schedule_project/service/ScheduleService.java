@@ -83,6 +83,7 @@ public class ScheduleService {
         return gets;
     }
 
+    @Transactional(readOnly = true)
     //선택 조회 메서드
     public GetScheduleResponse getOne(Long ScheduleId) {
         Schedule foundSchedule = scheduleRepository.findById(ScheduleId).orElseThrow(
@@ -98,7 +99,7 @@ public class ScheduleService {
         );
     }
 
-
+    @Transactional
     //선택한 일정 수정
     //선택한 일정의 아이디, 일정 제목, 작성자명, 패스워드 매개변수로 받아옴
     public UpdateScheduleResponse update(Long id, String scheduleName, String name, String password) {
@@ -121,6 +122,7 @@ public class ScheduleService {
                 findSchedule.getName());
     }
 
+    @Transactional
     //삭제 메서드 구현
     public void delete(Long id, String password) {
 
