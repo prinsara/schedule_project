@@ -85,4 +85,20 @@ public class ScheduleService {
         return gets;
     }
 
+    //선택 조회 메서드
+    public GetScheduleResponse getOne(Long ScheduleId) {
+        Schedule foundSchedule = scheduleRepository.findById(ScheduleId).orElseThrow(
+                () -> new IllegalMonitorStateException("선택한 일정이 존재하지 않습니다.")
+        );
+        return new GetScheduleResponse(
+                foundSchedule.getId(),
+                foundSchedule.getScheduleName(),
+                foundSchedule.getContent(),
+                foundSchedule.getName(),
+                foundSchedule.getCreatedAt(),
+                foundSchedule.getModifiedAt()
+        );
+    }
+
+
 }

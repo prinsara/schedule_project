@@ -30,7 +30,7 @@ public class ScheduleController {
 
     //전체조회
     @GetMapping("/schedules")
-    public List<GetScheduleResponse> getAllSchedule(
+    public ResponseEntity<List<GetScheduleResponse>> getAllSchedule(
             //URL에 붙어서 온 요청 파라미터 받기
             //GET/schedules?name=사라 이런 식으로 적었을 경우에
             //파람을 붙이면 해당 URL에서 name=사라를 꺼내서 메서드 안으로 넣어준다.
@@ -42,7 +42,13 @@ public class ScheduleController {
             //String name 은 받을 값의 자료형을 써준 것
     ) {
         //리턴 값은 Service에서 가져온 dto 값 반환
-        return scheduleService.getAll(name);
+        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.getAll(name));
+    }
+
+    //선택 일정 조회
+    @GetMapping("/schedules/{id}")
+    public GetScheduleResponse getOneSchedule(@PathVariable Long id) {
+       return scheduleService.getOne(id);
     }
 
 }
