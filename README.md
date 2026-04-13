@@ -542,7 +542,9 @@ Content-Type: application/json
 | scheduleId | Long | 일정 식별자 |
 
 status: `201 Created`
+
 ---
+
 ## 사용방법
 
 1. 애플리케이션 실행: `./gradlew bootRun`
