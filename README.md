@@ -97,6 +97,8 @@ Content-Type: application/json
 
 status: `201 Created`
 
+---
+
 ### 2. 전체 일정 조회
 
 domain: `schedule`
@@ -534,3 +536,13 @@ Content-Type: application/json
 | scheduleId | Long | 일정 식별자 |
 
 status: `201 Created`
+---
+## 사용방법
+
+1. 애플리케이션 실행: `./gradlew bootRun`
+2. 기본 주소: `http://localhost:8080`
+3. 순서 예시
+   - 일정 생성 `POST /schedules`
+   - 전체 조회 `GET /schedules`
+   - 단건 조회 `GET /schedules/{id}`
+   - 댓글 생성 `POST /schedules/{id}/comments`
