@@ -1,3 +1,7 @@
+## ERD
+
+![ERD](./erd.png)
+
 
 ## API 명세서
 
@@ -196,7 +200,8 @@ path: `/schedules/{id}`
 
 #### 01. 설명
 
-선택한 일정의 단건 정보를 조회하는 API
+선택한 일정의 단건 정보를 조회하는 API  
+해당 일정에 등록된 댓글 목록을 함께 응답한다.
 
 #### 02. 요청(Request)
 
@@ -253,7 +258,17 @@ id=1
   "content": "야르야르",
   "name": "사라",
   "createdAt": "2026-04-13T03:33:10.233204",
-  "modifiedAt": "2026-04-13T03:33:10.233204"
+  "modifiedAt": "2026-04-13T03:33:10.233204",
+  "comments": [
+    {
+      "id": 1,
+      "commentContent": "첫 댓글 야르메롱",
+      "name": "사라",
+      "createdAt": "2026-04-13T07:21:49.000000",
+      "modifiedAt": "2026-04-13T07:21:49.000000",
+      "scheduleId": 1
+    }
+  ]
 }
 ```
 
@@ -265,6 +280,13 @@ id=1
 | name | String | 작성자명 |
 | createdAt | LocalDateTime | 작성일 |
 | modifiedAt | LocalDateTime | 수정일 |
+| comments | List | 댓글 목록 |
+| comments.id | Long | 댓글 식별자 |
+| comments.commentContent | String | 댓글 내용 |
+| comments.name | String | 댓글 작성자명 |
+| comments.createdAt | LocalDateTime | 댓글 작성일 |
+| comments.modifiedAt | LocalDateTime | 댓글 수정일 |
+| comments.scheduleId | Long | 일정 식별자 |
 
 status: `200 OK`
 
@@ -429,3 +451,94 @@ Content-Type: application/json
 | - | - | - |
 
 status: `204 No Content`
+
+### 6. 댓글 생성
+
+domain: `schedule`
+
+url: `http://localhost:8080/schedules/{id}/comments`
+
+method: `POST`
+
+path: `/schedules/{id}/comments`
+
+#### 01. 설명
+
+해당 일정에 댓글을 작성하는 API  
+댓글은 일정당 최대 10개까지 작성 가능하다.
+
+#### 02. 요청(Request)
+
+##### a. Parameter & Querystring
+
+```text
+id=1
+```
+
+| 이름 | 데이터타입 | 설명 |
+| --- | --- | --- |
+| id | Long | 일정 식별자 |
+
+##### b. request headers
+
+```text
+Content-Type: application/json
+```
+
+| 이름 | 데이터타입 | 설명 |
+| --- | --- | --- |
+| Content-Type | String | 요청 데이터 형식 |
+
+##### c. request body
+
+```json
+{
+  "commentContent": "첫 댓글 야르메롱",
+  "name": "사라",
+  "password": "1234"
+}
+```
+
+| 이름 | 데이터타입 | 설명 |
+| --- | --- | --- |
+| commentContent | String | 댓글 내용 |
+| name | String | 댓글 작성자명 |
+| password | String | 비밀번호 |
+
+#### 03. 응답(Response)
+
+##### a. response header
+
+```text
+
+```
+
+| 이름 | 데이터타입 | 설명 |
+| --- | --- | --- |
+| - | - | - |
+
+##### b. response body
+
+성공응답:
+
+```json
+{
+  "id": 1,
+  "commentContent": "첫 댓글 야르메롱",
+  "name": "사라",
+  "createdAt": "2026-04-13T07:21:49.000000",
+  "modifiedAt": "2026-04-13T07:21:49.000000",
+  "scheduleId": 1
+}
+```
+
+| 이름 | 데이터타입 | 설명 |
+| --- | --- | --- |
+| id | Long | 댓글 식별자 |
+| commentContent | String | 댓글 내용 |
+| name | String | 댓글 작성자명 |
+| createdAt | LocalDateTime | 댓글 작성일 |
+| modifiedAt | LocalDateTime | 댓글 수정일 |
+| scheduleId | Long | 일정 식별자 |
+
+status: `201 Created`
