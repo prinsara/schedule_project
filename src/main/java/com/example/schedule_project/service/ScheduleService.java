@@ -44,7 +44,6 @@ public class ScheduleService {
     }
 
     /**
-     *
      * @param name 조회 시 작성자 명으로 조회
      * @return 조회 리스트 -> gets
      */
@@ -93,17 +92,17 @@ public class ScheduleService {
 
     @Transactional(readOnly = true)
     //선택 조회 메서드
-    public GetScheduleResponse getOne(Long ScheduleId) {
-        Schedule foundSchedule = scheduleRepository.findById(ScheduleId).orElseThrow(
-                () -> new IllegalArgumentException("선택한 일정이 존재하지 않습니다.")
-        );
+    public GetScheduleResponse getOne(Long id) {
+
+        Schedule findSchedule = findByIdOrThrow(id);
+
         return new GetScheduleResponse(
-                foundSchedule.getId(),
-                foundSchedule.getScheduleName(),
-                foundSchedule.getContent(),
-                foundSchedule.getName(),
-                foundSchedule.getCreatedAt(),
-                foundSchedule.getModifiedAt()
+                findSchedule.getId(),
+                findSchedule.getScheduleName(),
+                findSchedule.getContent(),
+                findSchedule.getName(),
+                findSchedule.getCreatedAt(),
+                findSchedule.getModifiedAt()
         );
     }
 
@@ -111,17 +110,13 @@ public class ScheduleService {
     //선택한 일정 수정
     //선택한 일정의 아이디, 일정 제목, 작성자명, 패스워드 매개변수로 받아옴
     public UpdateScheduleResponse update(Long id, String scheduleName, String name, String password) {
-        //찾은 아이디 밑에 있는 변수에 넣어줌
-        Schedule findSchedule = scheduleRepository.findById(id).orElseThrow(
-                //없을 시 예외처리
-                () -> new IllegalArgumentException("선택한 일정이 존재하지 않습니다.")
-        );
+
+        //해당 일정이 없을 경우 날리기
+        Schedule findSchedule = findByIdOrThrow(id);
 
         //사용자가 입력한 패스워드 == DB에 저장된 패스워드가 같은지 확인하기
-        if (!findSchedule.getPassword().equals(password)) {
-            //불일치시 예외처리
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-        }
+        checkPassword(findSchedule, password);
+
         //비밀번호가 일치할 시 일정 제목, 작성자명 수정
         findSchedule.updateSchedule(scheduleName, name);
 
@@ -135,18 +130,26 @@ public class ScheduleService {
     public void delete(Long id, String password) {
 
         //해당 일정이 없는 경우
-        Schedule findSchedule = scheduleRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("선택한 일정이 존재하지 않습니다.")
-        );
+        Schedule findSchedule = findByIdOrThrow(id);
 
         //사용자가 입력한 패스워드 == DB에 저장된 패스워드 일치 여부 확인
-        if (!findSchedule.getPassword().equals(password)) {
-            //예외처리
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-        }
+        checkPassword(findSchedule, password);
 
         //비밀번호가 일치할 경우 삭제처리
         scheduleRepository.deleteById(id);
 
+    }
+
+    public Schedule findByIdOrThrow(Long id) {
+        return scheduleRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("선택한 일정이 존재하지 않습니다.")
+        );
+    }
+
+    public void checkPassword(Schedule schedule, String password) {
+        //반환 값 없음, 매개변수에 스케줄을 넣는 이유는 DB에서 저장된 비밀번호가 해당 엔티티 안에있어서
+        if(!schedule.getPassword().equals(password)) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
     }
 }

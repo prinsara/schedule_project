@@ -6,5 +6,6 @@ import lombok.Getter;
 public class DeleteScheduleRequest {
 
     //삭제 요청시 비밀번호 요청으로 인한 Request dto 생성
-    private String password;
+    private  String password;
+
 }
