@@ -1,7 +1,9 @@
 package com.example.schedule_project.service;
 
 import com.example.schedule_project.dto.*;
+import com.example.schedule_project.entity.Comment;
 import com.example.schedule_project.entity.Schedule;
+import com.example.schedule_project.repository.CommentRepository;
 import com.example.schedule_project.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import java.util.List;
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
+    private final CommentRepository commentRepository;
 
     /**
      *
@@ -91,19 +94,40 @@ public class ScheduleService {
 
     @Transactional(readOnly = true)
     //선택 조회 메서드
-    public GetScheduleResponse getOne(Long id) {
-
+    public ScheduleCommentResponse getOne(Long id) {
+        //일정 찾기
         Schedule findSchedule = findByIdOrThrow(id);
 
-        return new GetScheduleResponse(
+        //댓글 목록 조회하기, 댓글 전부 조회하는 전체적인 List 메서드 생성 -> commentRepository
+        List<Comment> commentList = commentRepository.findByScheduleId(id);
+
+        //댓글 응답 DTO들 담아둘 빈 리스트 만들기@_@
+        List<CommentResponse> comments = new ArrayList<>();
+
+        //응답용 DTO로 변환
+        for (Comment comment : commentList) {
+            //DTO comments.add하면서 new 진행
+            comments.add(new CommentResponse(
+                    comment.getId(),
+                    comment.getCommentContent(),
+                    comment.getName(),
+                    comment.getCreatedAt(),
+                    comment.getModifiedAt(),
+                    comment.getScheduleId()
+            ));
+        }
+
+        return new ScheduleCommentResponse(
                 findSchedule.getId(),
                 findSchedule.getScheduleName(),
                 findSchedule.getContent(),
                 findSchedule.getName(),
                 findSchedule.getCreatedAt(),
-                findSchedule.getModifiedAt()
+                findSchedule.getModifiedAt(),
+                comments //여기에 변환된 댓글들 넣어줌
         );
     }
+
 
     @Transactional
     //선택한 일정 수정

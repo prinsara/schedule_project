@@ -50,7 +50,7 @@ public class ScheduleController {
 
     //선택 일정 조회
     @GetMapping("/{id}")
-    public ResponseEntity<GetScheduleResponse> getOneSchedule(@PathVariable Long id) {
+    public ResponseEntity<ScheduleCommentResponse> getOneSchedule(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(scheduleService.getOne(id));
     }
 
