@@ -32,15 +32,14 @@ public class ScheduleService {
 
         //변환한 거 저장하기 레포지토리에다가
         Schedule addSchedule = scheduleRepository.save(schedule);
-        CreateScheduleResponse createResponse = new CreateScheduleResponse(
+
+        return new CreateScheduleResponse(
                 addSchedule.getId(),
                 addSchedule.getScheduleName(),
                 addSchedule.getContent(),
                 addSchedule.getName(),
                 addSchedule.getCreatedAt(),
                 addSchedule.getModifiedAt());
-
-        return createResponse;
     }
 
     /**
